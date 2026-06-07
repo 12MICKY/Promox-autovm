@@ -252,6 +252,24 @@ async def promox(itx: discord.Interaction):
     )
 
 
+@client.tree.command(name="ip", description="แสดง IP ว่าง")
+async def ip(itx: discord.Interaction):
+    await itx.response.defer(ephemeral=True, thinking=True)
+    try:
+        ips = await free_ips()
+    except Exception as e:
+        await itx.followup.send(f"❌ ตรวจ IP ไม่ได้: `{e}`", ephemeral=True)
+        return
+    if not ips:
+        await itx.followup.send("⚠️ ไม่มี IP ว่างใน pool ตอนนี้", ephemeral=True)
+        return
+    await itx.followup.send(
+        "**Free IPs**\n"
+        f"```\n{chr(10).join(ips)}\n```",
+        ephemeral=True,
+    )
+
+
 @client.event
 async def on_ready():
     # Per-guild sync = commands show up instantly in every server the bot is in.
