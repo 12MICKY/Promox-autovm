@@ -1,0 +1,14 @@
+[Unit]
+Description=Proxmox Auto VM Discord Bot
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+WorkingDirectory=/opt/proxmox-auto-vm
+EnvironmentFile=/opt/proxmox-auto-vm/.env
+ExecStart=/opt/proxmox-auto-vm/.venv/bin/python /opt/proxmox-auto-vm/bot.py
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
