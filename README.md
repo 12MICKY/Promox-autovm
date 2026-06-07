@@ -8,13 +8,13 @@ Discord bot for creating Proxmox VMs from a slash command. Users run `/promox`, 
 
 ```mermaid
 flowchart TD
-    A[Discord user runs /promox] --> B[Bot reads online Proxmox nodes]
+    A[Discord user runs /promox or /ct] --> B[Bot reads online Proxmox nodes]
     B --> C[Bot scans the configured IP pool]
     C --> D[User selects Node, OS, and free IP]
     D --> E[User enters Hostname, Username, Password, RAM, Disk]
     E --> F[Bot requests next VMID from Proxmox]
     F --> G[Clone cloud-init template 9000/9001/9002]
-    G --> H[Set cloud-init: ciuser, cipassword, ipconfig0, nameserver]
+    G --> H[Set cloud-init or LXC network settings]
     H --> I[Resize VM disk]
     I --> J[Start VM]
     J --> K[Cloud-init configures guest OS]
@@ -36,6 +36,19 @@ The templates should have:
 - SSH password authentication enabled
 - `qemu-guest-agent` installed and enabled
 - Proxmox VM option `agent: enabled=1`
+
+## CT Templates
+
+Set CT template volume IDs in `.env`:
+
+```text
+CT_STORAGE=your-container-storage-name
+CT_BRIDGE=vmbr0
+CT_TEMPLATE_DEBIAN_12=storage-name:vztmpl/debian-template.tar.zst
+CT_TEMPLATE_ALPINE_323=storage-name:vztmpl/alpine-template.tar.xz
+```
+
+The `/ct` command creates an unprivileged LXC container with nesting enabled, static IP, root password, DNS, and gateway.
 
 ## IP Pool
 
@@ -67,6 +80,10 @@ PVE_TOKEN_SECRET
 PVE_TEMPLATE_NODE
 PVE_TEMPLATE_ID
 PVE_STORAGE
+CT_STORAGE
+CT_BRIDGE
+CT_TEMPLATE_DEBIAN_12
+CT_TEMPLATE_ALPINE_323
 GATEWAY
 NAMESERVER
 IP_PREFIX
