@@ -29,15 +29,20 @@ PREFIX = os.environ["IP_PREFIX"]
 
 # OS templates (extend as more cloud-init templates are added).
 OS_TEMPLATES = {
-    "ubuntu-2404": ("Ubuntu 24.04", 9000),
-    "debian-13": ("Debian 13", 9001),
-    "alpine": ("Alpine (low RAM)", 9002),
+    "ubuntu-2404":  ("Ubuntu 24.04", 9000),
+    "debian-13":    ("Debian 13", 9001),
+    "alpine":       ("Alpine (low RAM)", 9002),
+    "ubuntu-2204":  ("Ubuntu 22.04 LTS", 9003),
+    "debian-12":    ("Debian 12", 9004),
+    "rockylinux-9": ("Rocky Linux 9", 9005),
 }
 CT_STORAGE = os.environ.get("CT_STORAGE", STORAGE)
 CT_BRIDGE = os.environ.get("CT_BRIDGE", "vmbr0")
 CT_TEMPLATES = {
     key: (label, template)
     for key, label, template in [
+        ("ubuntu-2404", "Ubuntu 24.04 CT", os.environ.get("CT_TEMPLATE_UBUNTU_2404", "")),
+        ("ubuntu-2204", "Ubuntu 22.04 CT", os.environ.get("CT_TEMPLATE_UBUNTU_2204", "")),
         ("debian-12", "Debian 12 CT", os.environ.get("CT_TEMPLATE_DEBIAN_12", "")),
         ("alpine-323", "Alpine 3.23 CT", os.environ.get("CT_TEMPLATE_ALPINE_323", "")),
     ]
